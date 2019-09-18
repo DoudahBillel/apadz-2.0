@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div th:fragment="login-modal" class="modal fade" id="login-modal"
+     tabindex="-1" role="dialog" aria-labelledby="login_modal_label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="login" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="login_modal_header">Authentification</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p class="container text-center text-danger font-weight-bold"
+                           th:hidden="!${param.loginError}" th:text="#{loginError}"></p>
+
+                        <div class="form-group col-md-12">
+                            <label for="login-username" class="col-form-label">Nom
+                                d'utilisateur</label>
+                            <div class="input-group">
+									<span class="input-group-prepend"><span
+                                            class="input-group-text"><i class="fa fa-user"></i> </span></span><input
+                                    type="text" class="form-control" id="login-username"
+                                    placeholder="Nom d'utilisateur" name="username"
+                                    required="required">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-form-label" for="login-password">Mot
+                                de passe</label>
+                            <div class="input-group">
+									<span class="input-group-append"><span
+                                            class="input-group-text"><i class="fa fa-lock"></i></span></span> <input
+                                    type="password" class="form-control" id="login-password"
+                                    name="password" placeholder="Mot de passe" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Connexion</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var url = window.location.href;
+
+        if (url.indexOf('?loginError') != -1) {
+            $(document).ready(function () {
+                $('#login-modal').modal('show');
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Liste des utilisateurs</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/group}">Groupe</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un nouveau groupe</li>
+    </ol> 
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action list-group-item-success ">Créer un nouveau groupe</a>
+			
+			</div>
+		</div>
+		<form class="col-md-6" th:action="@{/system/group/update}" th:object="${groupe}" method="POST" novalidate>	
+		<input type="hidden" th:field="*{id}">
+			<div class="card ">
+  				<h5 class="card-header bg-success text-white">Informations du groupe</h5>
+  				<div class="card-body">
+    				<div class="row">
+						 <div class="form-group col-md-8 needs-validation">
+					    	<label for="designation">Nom du groupe</label>
+				    		<input type="text" th:field="*{designation}" class="form-control" th:classappend="${#fields.hasErrors('designation')}? 'is-invalid' : ''" id="designation" name="designation" placeholder="Groupe..." >
+				  			<small style="color:red;"  th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}" ></small>
+				  		</div>
+				  	</div>
+				  	<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="description">Description du groupe</label>
+				  			<textarea th:field="*{description}" class="form-control" name="description" id="description" rows="3" placeholder="Decription ..."></textarea>
+				  			
+				  		</div>
+	  				</div>
+  				</div>
+			</div>
+		<div class="card mt-5 mb-5">
+  			<h5 class="card-header bg-success text-white ">Ajouter des comptes à ce groupe</h5>
+  			<div class="card-body">
+    			<div class="row">
+			  		<div class="form-group col-md-8">
+		    			<select class="form-control" id="userSelected">
+		    				<option value="-1">Ajouter des comptes à ce groupes ...</option>
+		    				<option th:each="user : ${users}" th:value="${user.id+'|'+user.typeCompte}" th:text="${user.lastName +' ' +user.firstName }">Compte1 </option>
+		    			</select>
+		    			<button class="btn btn-primary mt-2 mb-2" id="addAccount"> <i class="fa fa-plus"></i> Ajouter le compte </button>
+		    			<table class="table ml-5 mt-2" id="usersTable">
+						  <thead class="bg-light">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Nom</th>
+						      <th scope="col">Prénom</th>
+						      <th scope="col">Type du compte</th>
+						      <th scope="col">Opérations</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    	<th:block th:if="${myUsers != null}" th:each="myUser : ${myUsers}">
+							      <tr>
+							      	 <td class="userId" th:text="${myUser.id}"> </td>
+							         <td th:text="${myUser.lastName}">...</td>
+							         <td th:text="${myUser.firstName}">...</td>
+							         <td>
+							         	<span th:if="${myUser.typeCompte} == 1">Simple utilisateur</span>
+						         		<span th:if="${myUser.typeCompte} == 2">Expert ressource</span>
+						         		<span th:if="${myUser.typeCompte} == 3">Administrateur métier</span>
+						         		<span th:if="${myUser.typeCompte} == 4">Administrateur système</span>
+							         </td>
+							         <td > <a onclick="remove(this)" id="remove" class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Enlever</a></td>
+							      </tr>
+							   </th:block> 
+						  </tbody>
+						</table>
+		  			</div>
+		  		</div>
+  			</div>
+		</div>
+		<button id="submitButton" type="submit" class="btn btn-primary"> <i class="fa fa-check"></i> Valider</button>
+		<a th:href="@{/system/group}" class="btn btn-info text-white"> <i class="fa fa-arrow-left"></i> Annuler</a>
+	   </form>
+	</div>
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+	<script th:inline="javascript">	
+	
+	
+	$( "#userSelected" ).change(function() {
+		//  var users = ${users}; 
+		  var table = $('#usersTable');
+		 // table.find("tbody tr").remove();
+		  var element = $('#userSelected').find(":selected").text()  ; 
+		  var value = $('#userSelected').find(":selected").val(); 
+		  
+		  var values = value.split("|") ; 
+		  var elements = element.split(" ") ;  
+		 // console.log("Nonofficial doc "+users) ; 
+		if(values[0]>0 && notFound(values[0])){ 
+			switch (values[1]){
+			case'1':
+					values[1] = "Simple utilisateur"; 
+				break;
+			case'2':
+					values[1] = "Expert ressource"; 
+				break;
+			case'3':
+					values[1] = "Administrateur métier"; 
+				break;
+			case'4':
+					values[1] = "Administrateur système"; 
+				break;
+			}
+		  	table.append('<tr><td class="userId">'+values[0]+'</td><td> '+elements[0]+'</td><td> '+elements[1]+' </td> <td>'+values[1] +' </td> <td><button onclick="remove(this)" class="btn btn-danger text-white" id="remove"> <i class="fa fa-trash"></i> Enlever </button>  </td></tr>')
+		}
+		$("#userSelected").val(-1) ; 
+	});
+	
+	function notFound(index){
+		var a = 1 ; 
+		$(".userId").each(function(){
+			if(index === $(this).text())
+				a = a*0; 
+			else 
+				a = a*1; 
+		});
+		return a ; 
+	}
+		
+	function remove(e){
+		$(e).parents('tr').remove(); 
+	}
+	
+	
+	$("form").submit(function(event){
+	
+		var userIds = "";  
+		$(".userId").each(function(){
+			userIds +=  $(this).text()+"#" ; 
+		});
+		$('<input>').attr({
+		    type: 'hidden',
+		    id: 'userIds',
+		    name: 'userIds',
+		    value: userIds
+		}).appendTo('form');
+	
+		console.log("here it goes userIds "+ userIds)
+		//event.preventDefault() ; 
+	})
+	
+		
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login page</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	
+	<div class="row mt-5  mb-5">
+		<form class="col-md-6 offset-md-5" th:action="@{/system/login}" method="post">
+			<div class="row">
+				 <div class="form-group col-md-4">
+			    	<label for="username">Nom d'utilisateur</label>
+		    		<input type="email" class="form-control" th:classappend="${param.error}? 'is-invalid' : ''" id="username" name="username" placeholder="nom@exemple.com">
+		  		</div>
+	  		</div>
+	  		<div class="row">
+		  		<div class="form-group col-md-4">
+		    		<label for="password">Mot de passe</label>
+		    		<input type="password" class="form-control" th:classappend="${param.error}? 'is-invalid' : ''" id="password" name="password" placeholder="********">
+		  		</div>
+		  	</div>	
+		  	<div class="row">
+		  		<div class="col-md-5">
+		  			<small th:if="${param.error}" style="color:red;">
+		        	Nom d'utilisateur ou mot de passe invalide. 
+					</small>
+		  		</div>
+		  	</div>
+		  	<div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="checkRememberMe" name="checkRememberMe">
+            	<label class="form-check-label" for="checkRememberMe">Rester connecter</label>
+			</div>
+	  		<button type="submit" class="btn btn-primary mb-5">Se connecter</button>	
+		</form>
+	</div>
+	
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Liste des utilisateurs</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/group}">Groupe</a>
+        </li>
+        <li class="breadcrumb-item active">Information du groupe</li>
+    </ol> 
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action list-group-item-success">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action ">Créer un nouveau groupe</a>
+			  
+			</div>
+		</div>
+		<form class="col-md-6" th:action="@{/system/group/new}" th:object="${groupe}" method="post" novalidate>	
+		<input type="hidden" th:field="*{id}">
+			<div class="card ">
+  				<h5 class="card-header bg-success text-white">Informations du groupe</h5>
+  				<div class="card-body">
+    				<div class="row">
+						 <div class="form-group col-md-8 needs-validation">
+					    	<label for="designation">Nom du groupe</label>
+				    		<input type="text" th:field="*{designation}" class="form-control" id="designation" name="designation" placeholder="Groupe..." disabled>
+				  			<div class="invalid-feedback" th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}" >
+				  				Veuillez Bien remplir ce champs ! 
+				  			</div>
+				  		</div>
+				  	</div>
+				  	<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="description">Description du groupe</label>
+				  			<textarea th:field="*{description}" class="form-control" name="description" id="description" rows="3" placeholder="Decription ..." disabled></textarea>
+				  			
+				  		</div>
+	  				</div>
+	  				<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="date">Ajouté le </label>
+				  			<input th:field="*{addedDate}" class="form-control" name="date" id="date" rows="3" placeholder="jj/mm/aaaa" disabled>
+				  			
+				  		</div>
+	  				</div>
+  				</div>
+			</div>
+		<div class="card mt-5 mb-5">
+  			<h5 class="card-header bg-success text-white ">Les privilèges de ce groupe</h5>
+  			<div class="card-body">
+				<div class="row">
+					  		<div class="form-group col-md-9">
+				    			<table class="table ml-5 mt-2" id="usersTable">
+								  <thead class="bg-light">
+								    <tr>
+								      <th scope="col">#</th>
+								      <th scope="col">Type Ressource</th>
+								      <th scope="col">Privileges</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+								    <th:block th:if="${groupe.privilege_type != null}" th:each="privilege  : ${groupe.privilege_type}">
+								      <tr>
+								      	 <td th:text="${privilege.id}">...</td>
+								         <td th:text="${privilege.type.designation}">...</td>
+								         <td>
+								         	<span th:if="${#strings.substring(privilege.privilege,0,1)=='1'}" class="badge badge-info">Ajout</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,1,2)== '1'}" class="badge badge-warning">Modification</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,2,3) == '1'}" class="badge badge-secondary">Validation</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,3,4) == '1'}" class="badge badge-danger">Suppression</span>
+								         	 
+								         </td>
+								         
+								      </tr>
+									</th:block> 
+								  </tbody>
+								</table>
+				  			</div>
+				 </div>
+		 </div>
+	 </div>
+		<div class="card mt-5 mb-5">
+  			<h5 class="card-header bg-success text-white ">Les utilisateurs de ce groupe</h5>
+  			<div class="card-body">
+    			<div class="row">
+			  		<div class="form-group col-md-9">
+		    			<table class="table ml-5 mt-2" id="usersTable">
+						  <thead class="bg-light">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Nom</th>
+						      <th scope="col">Prénom</th>
+						      <th scope="col">Email</th>
+						      <th scope="col">T	ype</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <th:block th:if="${groupe.comptes != null}" th:each="user : ${groupe.comptes}">
+						      <tr>
+						      	 <td th:text="${user.id}">...</td>
+						         <td th:text="${user.lastName}">...</td>
+						         <td th:text="${user.firstName}">...</td>
+						         <td th:text="${user.userName}">...</td>
+						         <td>
+						         	<span th:if="${user.typeCompte} == 1">Simple utilisateur</span>
+						         	<span th:if="${user.typeCompte} == 2">Expert ressource</span>
+						         	<span th:if="${user.typeCompte} == 3">Administrateur métier</span>
+						         	<span th:if="${user.typeCompte} == 4">Administrateur système</span>
+						         </td>
+						         
+						      </tr>
+							</th:block> 
+						  </tbody>
+						</table>
+		  			</div>
+		  		</div>
+  			</div>
+		</div>
+		<a th:href="@{/system/group/update/{id}(id=${groupe.id})}" class="btn btn-warning text-white"> <i class="fa fa-wrench"></i> Modifier</a>
+		<a th:href="@{/system/group/{id}/privileges/update(id=${groupe.id})}" class="btn btn-primary"> <i class="fa fa-ban"></i> Modifier les privilèges </a>
+		<a th:href="@{/system/group/delete/{id}(id=${groupe.id})}" class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Supprimer</a>
+	   </form>
+	</div>
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+	<script th:inline="javascript">	
+	
+	
+	$( "#addUser" ).click(function() {
+		//  var users = ${users}; 
+		  var table = $('#usersTable');
+		  table.find("tbody tr").remove();
+		  var element = $('#userSelected').find(":selected").text()  ; 
+		  var value = $('#userSelected').find(":selected").val(); 
+		  var elements = element.split(" ") ;  
+		 // console.log("Nonofficial doc "+users) ; 
+		  table.append('<tr><td>'+value+'</td><td> '+elements[0]+'</td><td> '+elements[1]+' </td> <td> </td> <td><a class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Enlever </a>  </td></tr>')
+		});
+	</script>
+	
+</body>
+</html>

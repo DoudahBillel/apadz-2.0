@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Login page</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/user}">Utilisateurs</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un nouvel utilisateur</li>
+    </ol> 
+	
+			
+	<div class="row inner-sec-w3ls-agileits py-lg-5 py-3">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action list-group-item-success">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+            
+			</div>
+		</div>
+		<form class="col-md-6" th:action="@{/system/user/new}" th:object="${compte}" method="post">
+		<input type="hidden" th:field="*{id}">	
+			<div class="card ">
+  				<h5 class="card-header bg-success text-white">Informations du compte</h5>
+  				<div class="card-body">
+    				<div class="row">
+						 <div class="form-group col-md-4">
+					    	<label for="firstName">Nom </label>
+				    		<input type="text" th:field="*{lastName}" class="form-control" id="firstName" name="firstName" placeholder="nom.." disabled>
+				  		</div>
+				  		<div class="form-group col-md-4">
+				    		<label for="lastName">Prénom</label>
+				    		<input type="text" th:field="*{firstName}" class="form-control" id="lastName" placeholder="prénom..." disabled>
+				  		</div>
+	  				</div>
+	  				<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="email">Email</label>
+				    		<input type="email" th:field="*{userName}" class="form-control" id="email" placeholder="nom@exemple.com" disabled>
+				  		</div>
+		  			</div>
+	  				<div class="row">
+		  				<div class="form-group col-md-8">
+				    		<label for="typeCompte">Type de compte</label>
+				    		<select class="form-control" id="typeCompte" th:field="*{typeCompte}" disabled>
+				    		  <option value="-1">Choisir le type de compte</option>
+						      <option value="4">Administrateur Général (système)</option>
+						      <option value="3">Administrateur métier</option>
+						      <option value="2">Expert ressource</option>
+						      <option value="1">Simple utilisateur</option>
+		    				</select>
+		  				</div>
+		  			</div>
+  				</div>
+			</div>
+		<div class="card mt-5 mb-5">
+  			<h5 class="card-header bg-success text-white">Groupes</h5>
+  			<div class="card-body">
+			  		<div class="form-group">
+						<table class="table">
+							<thead class="bg-light">
+								<tr>
+									<td>#</td>
+									<td>Designation</td>
+									<td>Description</td>
+									
+								</tr>
+							</thead>
+							<tbody>
+							   <th:block th:each="group : ${groupes}">
+							      <tr>
+							      	<td th:text="${group.id}"></td>
+							         <td th:text="${group.designation}">...</td>
+							         <td th:text="${group.description}">...</td>
+							      </tr>
+							      <tr>
+							      </tr>
+							   </th:block>
+							</tbody>
+						</table>
+		  			</div>
+  			</div>
+		</div>
+		
+		<a th:href="@{/system/user/update/{id}(id=${compte.id})}" class="btn btn-warning text-white"> <i class="fa fa-wrench"></i> Modifier</a>
+		<a th:href="@{/system/user/delete/{id}(id=${compte.id})}" class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Supprimer</a>
+	   </form>
+	</div>
+	
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

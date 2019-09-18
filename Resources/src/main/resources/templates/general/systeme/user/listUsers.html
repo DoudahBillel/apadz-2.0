@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Liste des utilisateurs</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/user}">Utilisateurs</a>
+        </li>
+        <li class="breadcrumb-item active">Liste des utilisateurs</li>
+    </ol> 
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action list-group-item-success">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+			 
+			</div>
+		</div>
+    	<div class=" col-md-8">
+    		<p>Statistique des comptes</p>
+    		<div class="row mb-3">	
+				<div class="list-group">
+				  <a th:href="@{/system/user/type/4}" class="list-group-item"> <span class="badge badge-primary" th:text="${adminSystem}">0</span> Administrateurs sytèmes </a>
+				  </div>
+				  <div class="list-group">
+				  <a th:href="@{/system/user/type/3}" class="list-group-item"> <span class="badge badge-primary" th:text="${adminRessource}">0</span> Administrateurs métiers</a>
+				  <!-- <li class="list-group-item">Morbi leo risus <span class="badge badge-primary">Primary</span></li>-->
+				 </div>
+				 <div class="list-group">
+				  <a th:href="@{/system/user/type/2}" class="list-group-item"><span class="badge badge-primary" th:text="${expertRessource}">0</span> Experts ressource</a>
+				  </div>
+				  <div class="group-item">
+				  <a th:href="@{/system/user/type/1}" class="list-group-item"><span class="badge badge-primary" th:text="${simpleUser}">0</span> Simple utilisateurs</a>
+				</div>
+			</div>
+					<a th:href="@{/system/user/new}" class="btn btn-success"> <i class="fa fa-plus"></i>  Ajouter</a>
+					<table class="table mt-3">
+						<thead class="bg-light">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Nom</th>
+						      <th scope="col">Prénom</th>
+						      <th scope="col">Email</th>
+						      <th scope="col">Type</th>
+						      <th scope="col"></th>
+						    </tr>
+						</thead>
+						<tbody>
+						   <th:block th:each="user : ${users}">
+						      <tr>
+						      	 <td th:text="${user.id}">...</td>
+						         <td th:text="${user.lastName}">...</td>
+						         <td th:text="${user.firstName}">...</td>
+						         <td th:text="${user.userName}">...</td>
+						         <td>
+						         	<span th:if="${user.typeCompte} == 1">Simple utilisateur</span>
+						         	<span th:if="${user.typeCompte} == 2">Expert ressource</span>
+						         	<span th:if="${user.typeCompte} == 3">Administrateur métier</span>
+						         	<span th:if="${user.typeCompte} == 4">Administrateur système</span>
+						         </td>
+						         <td><!--  -->
+						         		<a th:href="@{/system/user/{id}(id= ${user.id})}" class="btn btn-info"><i class="fa fa-info"></i> Détail </a>
+						         		<a th:href="@{/system/user/update/{id}(id=${user.id})}" class="btn btn-warning text-white"> <i class="fa fa-wrench"></i> Modifier</a>
+						         		<a th:href="@{/system/user/delete/{id}(id=${user.id})}" class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Supprimer</a>
+						         	<!-- th:href="@{/system/group/delete/{id}(id=${groupe.id}"  -->
+						         </td>
+						      </tr>
+							</th:block> 
+						</tbody>
+					</table>
+    	</div>
+    </div>
+		
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

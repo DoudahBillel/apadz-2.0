@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page Title</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	
+		<ol class="breadcrumb">
+	        <li class="breadcrumb-item">
+            <a href="general/presentation/index.html">Accueil</a>
+        	</li>
+        	<li class="breadcrumb-item active"><!-- Your Page name here --> </li>
+    	</ol> 
+    	
+         <div class="inner-sec-w3ls-agileits py-lg-5 py-3 ml-5">
+				<!-- Your code goes here -->
+         </div>
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

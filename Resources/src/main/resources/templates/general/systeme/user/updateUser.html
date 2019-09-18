@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Login page</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/user}">Utilisateurs</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un nouvel utilisateur</li>
+    </ol> 
+	
+			
+	<div class="row inner-sec-w3ls-agileits py-lg-5 py-3">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action list-group-item-success">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+			 
+			</div>
+		</div>
+		<form id="form" class="col-md-6" th:action="@{/system/user/new}" th:object="${compte}" method="post">
+		<input type="hidden" th:field="*{id}">	
+			<div class="card ">
+  				<h5 class="card-header bg-success text-white">Informations du compte</h5>
+  				<div class="card-body">
+    				<div class="row">
+						 <div class="form-group col-md-4">
+					    	<label for="firstName">Nom </label>
+				    		<input type="text" th:field="*{lastName}" class="form-control" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid' : '' " id="firstName" name="firstName" placeholder="nom..">
+				    		<small style="color:red;"  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" ></small>
+				  		</div>
+				  		<div class="form-group col-md-4">
+				    		<label for="lastName">Prénom</label>
+				    		<input type="text" th:field="*{firstName}" class="form-control" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid' : '' " id="lastName" placeholder="prénom...">
+				    		<small style="color:red;"  th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" ></small>
+				  		</div>
+	  				</div>
+	  				<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="email">Email</label>
+				    		<input type="email" th:field="*{userName}" class="form-control" th:classappend="${#fields.hasErrors('userName')}? 'is-invalid' : '' " id="email" placeholder="nom@exemple.com">
+				    		<small style="color:red;"  th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" ></small>
+				  		</div>
+		  			</div>
+	  				<div class="row">
+				  		<div class="form-group col-md-8">
+				    		<label for="password">Mot de passe</label>
+				    		<input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')}? 'is-invalid' : '' " id="password" placeholder="*******">
+				    		<small style="color:red;"  th:if="${#fields.hasErrors('password')}" th:errors="*{password}" ></small>
+				  		</div>
+		  			</div>
+	  				<div class="row">
+		  				<div class="form-group col-md-8">
+				    		<label for="typeCompte">Type de compte</label>
+				    		<select class="form-control" id="typeCompte" th:field="*{typeCompte}">
+				    		  <option value="-1">Choisir le type de compte</option>
+						      <option value="4">Administrateur Général (système)</option>
+						      <option value="3">Administrateur métier</option>
+						      <option value="2">Expert ressource</option>
+						      <option value="1">Simple utilisateur</option>
+		    				</select>
+		  				</div>
+		  			</div>
+  				</div>
+			</div>
+		<div class="card mt-5 mb-5">
+  			<h5 class="card-header bg-success text-white">Groupes</h5>
+  			<div class="card-body">
+    			<div class="row">
+			  		<div class="form-group col-md-8">
+						<select class="form-control" id="groupSelected">
+							<option value="-1">Selctioner des groupes...</option>
+		    				<option th:each="group : ${groupes}" th:value="${group.id}" th:text="${group.designation }"> ... </option>
+		    			</select>
+		  			</div>
+		  		</div>
+		  		<div class="row">
+			  		<div class="col-md-12">
+						<table class="table" id="groupsTable">
+							<thead class="bg-light">
+								<tr>
+									<td> #</td>
+									<td> Designation</td>
+									<td></td>
+								</tr>
+							</thead>			
+							<tbody>
+								<th:block th:if="${myGroups != null}" th:each="myGroup : ${myGroups}">
+									<tr>
+										<td class="groupId" th:text="${myGroup.id}"> </td>
+										<td th:text="${myGroup.designation}"> </td>
+										<td> <button onclick="remove(this)" class="btn btn-danger text-white" id="remove"> <i class="fa fa-trash"></i> Enlever </button> </td>
+									</tr>
+								</th:block>
+						   </tbody>
+						</table>
+		  			</div>
+		  		</div>
+  			</div>
+		</div>
+		<button type="submit" class="btn btn-primary"> <i class="fa fa-check"></i> Valider</button>
+		<a th:href="@{/system/user}" class="btn btn-info text-white"> <i class="fa fa-arrow-left"></i> Annuler</a>
+	   </form>
+	</div>
+	
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+	
+	
+	<script th:inline="javascript">	
+	
+	
+	$( "#groupSelected" ).change(function() {
+		
+		  var table = $('#groupsTable');
+		  var element = $('#groupSelected').find(":selected").text()  ; 
+		  var value = $('#groupSelected').find(":selected").val(); 
+		  
+		if(value>0 && notFound(value)){ 
+		  	table.append('<tr><td class="groupId">'+value+'</td><td> '+element+'</td><td><button onclick="remove(this)" class="btn btn-danger text-white" id="remove"> <i class="fa fa-trash"></i> Enlever </button>  </td></tr>')
+		}
+		$("#groupSelected").val(-1) ; 
+	});
+	
+	function notFound(index){
+		var a = 1 ; 
+		$(".groupId").each(function(){
+			if(index === $(this).text())
+				a = a*0; 
+			else 
+				a = a*1; 
+		});
+		return a ; 
+	}
+		
+	function remove(e){
+		$(e).parents('tr').remove(); 
+	}
+	
+	
+	$("#form").submit(function(event){
+	
+		var groupIds = "";  
+		$(".groupId").each(function(){
+			groupIds +=  $(this).text()+"#" ; 
+		});
+		$('<input>').attr({
+		    type: 'hidden',
+		    id: 'groupIds',
+		    name: 'groupIds',
+		    value: groupIds
+		}).appendTo('form');
+	
+	})
+	
+		
+	</script>
+	
+	
+</body>
+</html>

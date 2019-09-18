@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/utils/dashboard_dependancies.html :: dependancies"></head>
+<style>
+    .sub-dropdown-menu {
+        max-height: 25rem;
+    }
+</style>
+<body class="h-100">
+
+<div th:replace="fragments/utils/index_header :: div"/>
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0" style="top:auto; position: absolute; height: calc(92vh)">
+            <div class="main-navbar">
+                <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+                    <a class="navbar-brand w-100 mr-0" style="line-height: 25px;">
+                        <div class="d-table m-auto">
+                            <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;"
+                                 th:src="@{ /images/dashboard/logo.svg }" alt="APADZ">
+                            <span class="d-none d-md-inline ml-1">APADZ</span>
+                        </div>
+                    </a>
+
+                    <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none">
+                        <i class="material-icons">&#xE5C4;</i>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="card m-1 mb-2">
+                <div class="row">
+                    <img class="user-avatar rounded-circle mt-2 ml-2 mb-2 col-4" th:src="@{ /images/dashboard/admin_profil.png }"
+                         alt="Mon profil" style="width: 5rem;">
+
+                    <h6 class="card-title align-self-center username_holder m-1"></h6>
+                </div>
+                <div class="row m-1">
+                    <h6 class="nom_prenom_holder text-center col-12 p-1"></h6>
+
+                    <div class="d-flex justify-content-around col-12 p-1">
+                        <span class="d-flex align-items-center mb-2">
+                            <i class="fa fa-graduation-cap"></i>
+                        </span>
+                        <h6 class="filliere_holder text-center"></h6>
+                        <span class="d-flex align-items-center mb-2">
+                            <i class="fa fa-graduation-cap"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-wrapper">
+                <ul th:fragment="ul" class="nav flex-column">
+                    <li class="nav-item">
+                        <a id="articles_link" class="nav-link " th:href="@{ /dashboard/articles }">
+                            <i class="material-icons">vertical_split</i>
+                            <span>Liste des articles</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="nouvel_article_link" class="nav-link" th:href="@{ /dashboard/nouvel_article }">
+                            <i class="material-icons">note_add</i>
+                            <span>Nouvel article</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+            <div class="main-navbar sticky-top bg-white">
+                <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+                    <div class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                    </div>
+                    <ul class="navbar-nav flex-row ">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+                                <img class="user-avatar rounded-circle mr-2" th:src="@{ /images/dashboard/admin_profil.png }"
+                                     alt="Mon profil">
+                                <span class="d-none d-md-inline-block username_holder"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-small">
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" th:href="@{ /logout }">
+                                    <i class="material-icons text-danger">&#xE879;</i> Se déconnecter </a>
+                            </div>
+                        </li>
+                    </ul>
+                    <nav class="nav">
+                        <a href="#"
+                           class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left"
+                           data-toggle="collapse" data-target=".header-navbar" aria-expanded="false"
+                           aria-controls="header-navbar">
+                            <i class="material-icons">&#xE5D2;</i>
+                        </a>
+                    </nav>
+                </nav>
+            </div>
+
+            <div class="main-content-container container-fluid px-4">
+                <div class="page-header row no-gutters py-4">
+                    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                        <span class="text-uppercase page-subtitle">Dashboard</span>
+                        <h3 class="page-title" th:text="${ page_title }"/>
+                    </div>
+                </div>
+
+
+                <div class="row" th:replace="${ main_content } :: div"></div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<div th:replace="fragments/utils/footer.html :: footer"></div>
+
+<script type="text/javascript" th:src="@{ /js/app/dashboard.js }"></script>
+<script th:inline="javascript">
+    var active_link_id = [[${active_nav_link}]];
+
+    $("#" + active_link_id).addClass("active");
+</script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/utils/dependancies.html :: dependancies">
+    <meta charset="UTF-8">
+    <title>APADZ</title>
+</head>
+<style>
+    .modal-open {
+        padding-right: 0px !important;
+    }
+</style>
+<body class="shards-landing-page--1">
+
+<div th:replace="fragments/utils/index_header :: div"/>
+
+<div id="our-services" class="our-services section py-4">
+    <h2 id="title" class="section-title text-center my-5"></h2>
+    <h5 id="description" class="text-center text-athens-gray"></h5>
+    <hr/>
+    <h6 id="addedDate" class="m-2 text-reagent-gray"></h6>
+    <div class="features py-4 mb-4">
+        <div id="content" class="container text-black">
+
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments/utils/footer.html :: footer"></div>
+<div th:insert="fragments/login-fragment.html :: login-modal"></div>
+
+<script type="application/javascript" th:src=" @{/js/app/restcalls.js} "></script>
+<script type="application/javascript" th:src=" @{/js/app/busness_to_ui.js} "></script>
+
+<script type="application/javascript">
+    $(document).ready(function(){
+        var idArticle = [[${ articleId }]];
+
+        find_article_by_id(idArticle, function(article) {
+            add_article_to_descriptor(article);
+        });
+    });
+</script>
+
+<script th:src="@{/js/modernizr.custom.js}"></script>
+<script>
+    $(document).ready(function() {
+        $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                $(this).toggleClass('open');
+            },
+            function() {
+                $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+
+<script th:src="@{/js/move-top.js}"></script>
+<script th:src="@{/js/easing.js}"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        $(".scroll").click(function(event) {
+            event.preventDefault();
+            $('html,body').animate({
+                scrollTop: $(this.hash).offset().top
+            }, 900);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+        };
+
+        $().UItoTop({
+            easingType: 'easeOutQuart'
+        });
+    });
+</script>
+
+</body>
+</html>

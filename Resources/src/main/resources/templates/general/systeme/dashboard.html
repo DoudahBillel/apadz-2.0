@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login page</title>
+<meta charset="UTF-8">
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system}"> Accueil</a>
+        </li>
+    </ol> 
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action list-group-item-success">Mon tableau de bord</a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+       		  
+			</div>
+		</div>
+    	<div class=" col-md-6">
+    		<div class="row">	
+				<div class="card col-md-5">
+				  <div class="card-body">
+				    <h5 class="card-title"> <i class="fa fa-user fa-4x" style="color:green;"></i> <span class="ml-5" th:text="${comptes +' utilisateurs' }">0 utilisateurs</span></h5>
+				    <br>
+				    <a th:href="@{/system/user}" class="card-link">Liste des utilisateurs</a>
+				    <a th:href="@{/system/user/new}" class="card-link">Ajouter un utilisateurs</a>
+				  </div>
+				</div>
+				<div class="card col-md-5 ml-5">
+				  <div class="card-body">
+				    <h5 class="card-title"> <i class="fa fa-users fa-4x" style="color:green;"></i> <span class="ml-5" th:text="${groupes +' groupes' }">0 Groupes</span></h5>
+				    <br>
+				    <a th:href="@{/system/group}" class="card-link">Liste des groupes</a>
+				    <a th:href="@{/system/group/new}" class="card-link">Ajouter un groupe</a>
+				  </div>
+				</div>
+			</div>
+    	</div>
+    </div>
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

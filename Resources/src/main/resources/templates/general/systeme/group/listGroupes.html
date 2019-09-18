@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Liste des groupes</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/group}">Groupes</a>
+        </li>
+        <li class="breadcrumb-item active">Liste des groupes</li>
+    </ol> 
+	<div class="card card-danger" th:if="${user.canAddRessource(1)}">
+		<div class="card-header">
+			<h3>Hi</h3>
+		</div>
+		<div class="card-body">
+			<span>
+				Hello
+			</span>
+		</div>
+	</div>
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row" >
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action list-group-item-success">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<a th:href="@{/system/group/new}" class="btn btn-success"> <i class="fa fa-plus"></i>  Ajouter</a>
+			<table class="table mt-3">
+				<thead class="bg-light">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Designation</th>
+						<th scope="col">Description</th>
+						<th scope="col">Nombre de comptes</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="group : ${groupes}">
+						<tr>
+						    <td th:text="${group.id}">...</td>
+						    <td th:text="${group.designation}">...</td>
+						    <td th:text="${#strings.abbreviate(group.description,10)}">...</td>
+						    <td th:text="${group.getComptes().size()}"> </td>
+						    <td><!--  -->
+						    			<a th:href="@{/system/group/{id}(id=${group.id})}" class="btn btn-info"><i class="fa fa-info"></i> Détail</a>
+						         		<a th:href="@{/system/group/update/{id}(id=${group.id})}" class="btn btn-warning text-white"> <i class="fa fa-wrench"></i> Modifier</a>
+						         		<a th:href="@{/system/group/{id}/privileges/update(id=${group.id})}" class="btn btn-primary"><i class="fa fa-ban"></i> Modifier les privilèges</a>
+						         		<a th:href="@{/system/group/delete/{id}(id=${group.id})}" class="btn btn-danger text-white"> <i class="fa fa-trash"></i> Supprimer</a>
+							</td>
+						</tr>
+						<tr>
+						</tr>
+					</th:block> 
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+</body>
+</html>

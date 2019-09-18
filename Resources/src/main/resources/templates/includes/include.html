@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headFiles">
+<meta charset="UTF-8" />
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+<script src="https://kit.fontawesome.com/09e8bf1092.js"></script>
+</head>
+<body>
+	
+	<div th:fragment="header" class="nav-bar">
+	<div class="row mt-5 mb-3">
+		<div class="col-md-3">
+			<ul>
+				<li><i class="fas fa-camera"></i></li>
+			</ul>
+		</div>
+		<div class="col-md-6">
+			<p> Hi 4 </p>
+		</div>
+		<div class="col-md-3">
+			<a class="btn btn-warning" th:href="@{/system/login}">&nbsp Se connecter &nbsp</a>
+			<a class="btn btn-warning">&nbsp &nbsp &nbsp S'inscrire &nbsp &nbsp &nbsp</a>
+		</div>
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+	  <div class="collapse navbar-collapse container" id="navbarNavDropdown">
+	    <ul class="navbar-nav">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#"> Accueil  <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          Services
+	        </a>
+	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="#">Action</a>
+	          <a class="dropdown-item" href="#">Another action</a>
+	          <a class="dropdown-item" href="#">Something else here</a>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">Lois et réglementaires</a>
+	      </li>
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="ressources" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          Ressources génétiques
+	        </a>
+	        <div class="dropdown-menu" aria-labelledby="ressources">
+	          <a class="dropdown-item" href="#">Action</a>
+	          <a class="dropdown-item" href="#">Another action</a>
+	          <a class="dropdown-item" href="#">Something else here</a>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">Contactez-nous</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">A propos</a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+	
+	
+	</div>
+	
+	
+	
+	<div th:fragment="footer" class="text-muted bg-warning mt-5">
+		<div class="row">
+			<div class="col-md-4">
+				<h3 class="ml-2">A propos de nous</h3>
+				<p class="ml-2">Nous sommes une équipe d'étudiants, nous avons développé cette plateforme dans le cadre de notre projet de spécialité
+				en 4ième année à l'ESI. </p>
+			</div>
+			<div class="col-md-4">
+				<h3 class="ml-2">A propos de nous</h3>
+				<p class="ml-2">Nous sommes une équipe d'étudiants, nous avons développé cette plateforme dans le cadre de notre projet de spécialité
+				en 4ième année à l'ESI. </p>
+			</div>
+			<div class="col-md-4">
+				<h3 class="ml-2">A propos de nous</h3>
+				<p class="ml-2">Nous sommes une équipe d'étudiants, nous avons développé cette plateforme dans le cadre de notre projet de spécialité
+				en 4ième année à l'ESI. </p>
+			</div>
+		</div>	
+	</div>
+	
+	<div th:fragment="jsIncludes">
+		<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+	</div>
+</body>
+</html>

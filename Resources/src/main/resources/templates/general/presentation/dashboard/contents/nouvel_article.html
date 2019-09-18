@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>APADZ</title>
+</head>
+<body>
+<form class="add-new-post row post-json-form" method="post"
+      th:action="@{ /restapi/articles }" ms-clear-on-success="true" th:fragment="div"
+      ms-success-callback="onSuccessCallback">
+    <div class="col-lg-8 col-md-12">
+        <div class="card card-small mb-3">
+            <div class="card-body">
+                <input id="new_article_title" class="form-control form-control-lg mb-3" type="text" placeholder="Titre de l'article" name="title">
+                <div id="editor-container" class="add-new-post__editor mb-1 ql-container ql-snow">
+                   </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12">
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Informations complémentaires</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="form-group col-12">
+                    <label for="new_article_categorie" class="col-form-label">Catégorie d'article</label>
+
+                    <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fa fa-graduation-cap"></i>
+                        </span>
+                    </span>
+                        <select class="custom-select categories-articles-options-holder"
+                                name="categorieArticle" required="required"
+                                id="new_article_categorie">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-12">
+                    <label for="new_article_description">Déscription</label>
+                    <textarea id="new_article_description" class="form-control" name="description"></textarea>
+                </div>
+
+                <div class="form-group col-12">
+                    <input type="submit" class="btn btn-primary" th:value="Confirmer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{ /js/app-blog-new-post.1.1.0.min.js}"></script>
+    <script type="application/javascript">
+        find_all_categories_articles(function(categorie){
+            add_categorie_as_option(".categories-articles-options-holder", categorie);
+        });
+
+        $(document).ready(function(){
+            $("#editor-container").find(".ql-editor").each(function(index, element) {
+                $(element).addClass("valuated-block").attr("name", "content");
+                $(element).addClass("valuated-block").attr("id", "new_article_content");
+            });
+        });
+    </script>
+</form>
+</body>
+</html>

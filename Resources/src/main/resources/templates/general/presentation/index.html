@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/utils/dependancies.html :: dependancies"></head>
+<style>
+    .modal-open {
+        padding-right: 0px !important;
+    }
+</style>
+<body class="shards-landing-page--1">
+
+<div th:replace="fragments/utils/index_header :: div"/>
+
+<div class="welcome d-flex justify-content-center flex-column center">
+    <div class="inner-wrapper mt-auto mb-auto container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="welcome-heading display-4 text-white">APADZ</h1>
+                <p class="text-white">
+                    Le portail d'accés à la plateforme d'administration </br> vous
+                    permet d'administrer vos articles, liens et autres de façon intuitive.</br>
+                </p>
+                <div>
+                    <a data-toggle="modal"
+                       data-target="#login-modal" href="#"
+                       class="btn btn-lg btn-outline-white btn-pill align-self-center"><i
+                            class="fa fa-sign-in"></i> Plateforme d'administration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="our-services" class="our-services section py-4">
+    <h3 class="section-title text-center my-5">Articles et liens</h3>
+
+    <div class="features py-4 mb-4">
+        <div class="container">
+            <ul id="categoriesArticlesHolder" class="list-group list-group-small list-group-flush">
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments/utils/footer.html :: footer"></div>
+<div th:insert="fragments/login-fragment.html :: login-modal"></div>
+
+<script type="application/javascript" th:src=" @{/js/app/restcalls.js} "></script>
+<script type="application/javascript" th:src=" @{/js/app/busness_to_ui.js} "></script>
+
+<script type="application/javascript">
+    $(document).ready(function(){
+        find_all_categories_articles(function(categorie) {
+            add_categorie_article_to_index("#categoriesArticlesHolder", categorie);
+        }, function() {
+            find_all_articles(function(article){
+                add_article_to_index("#categoriesArticlesHolder", article);
+            });
+        });
+    });
+</script>
+
+<script th:src="@{/js/modernizr.custom.js}"></script>
+<script>
+    $(document).ready(function() {
+        $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                $(this).toggleClass('open');
+            },
+            function() {
+                $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+
+<script th:src="@{/js/move-top.js}"></script>
+<script th:src="@{/js/easing.js}"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        $(".scroll").click(function(event) {
+            event.preventDefault();
+            $('html,body').animate({
+                scrollTop: $(this.hash).offset().top
+            }, 900);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+        };
+
+        $().UItoTop({
+            easingType: 'easeOutQuart'
+        });
+    });
+</script>
+
+</body>
+</html>

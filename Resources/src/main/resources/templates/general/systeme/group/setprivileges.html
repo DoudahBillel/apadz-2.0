@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Liste des utilisateurs</title>
+<th:block th:include="includes/model.html :: headFiles"> </th:block>
+</head>
+<body>
+	<div th:replace="includes/model.html :: header">
+	</div>
+	
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/system/group}">Groupe</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un nouveau groupe</li>
+    </ol> 
+	
+	<div class="inner-sec-w3ls-agileits py-lg-5 py-3 row">
+		<div class="col-md-3 ml-5">
+			<div class="list-group" style="width:18rem;">
+			  <a th:href="@{/system}" class="list-group-item list-group-item-action">
+			    Mon tableau de bord
+			  </a>
+			  <a th:href="@{/system/user}" class="list-group-item list-group-item-action">Liste des utlisateurs</a>
+			  <a th:href="@{/system/user/new}" class="list-group-item list-group-item-action">Créer un nouvel utilisateur</a>
+			  <a th:href="@{/system/group}" class="list-group-item list-group-item-action">Liste des groupes </a>
+			  <a th:href="@{/system/group/new}" class="list-group-item list-group-item-action">Créer un nouveau groupe</a>
+			  <a th:href="@{/system/group/{id}/privileges(id=${groupe.id})}" class="list-group-item list-group-item-action list-group-item-success ">Modifier les privilèges des groupes</a>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<h3>Privilèges sur les types des ressources</h3>
+			<div class="row mt-3">
+				<div class="form-group col-md-3">
+					<select class="form-control" id="privilege">
+						<option value="-1"> - Selectionner une ressource... -</option>
+						<option th:each="ressource : ${ressources}"  th:value="${ressource.id}" th:text="${ressource.designation}" >...</option>
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<div class="btn btn-info form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="ajout" value="ajout">
+					  <label class="form-check-label" for="ajout">Ajout</label>
+					</div>
+					<div class="btn btn-warning form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="modification" value="modification">
+					  <label class="form-check-label" for="modification">Modification</label>
+					</div>
+					<div class="btn btn-secondary form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="validation" value="validation">
+					  <label class="form-check-label" for="validation">Validation</label>
+					</div>
+					<div class="btn btn-danger form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="suppression" value="suppression">
+					  <label class="form-check-label" for="suppression">Suppression</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<button id="add" class="btn btn-primary text-white"> <i class="fa fa-plus"></i> &nbsp Ajouter les privilèges</button>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<table class="col-md-8 table ml-5 mt-3" id="privilegesTable">
+						  <thead class="bg-light">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Ressource</th>
+						      <th scope="col">Privilèges</th>
+						      <th></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  		<th:block th:each="privilege : ${existingRessources}">
+						  			<tr>
+						  				<td class="privilegeId" th:id="${privilege.type.id +'#' +privilege.privilege}" hidden></td>
+						  				<td class="ressourceId" th:text="${privilege.type.id}"></td>
+						  				<td th:text="${privilege.type.designation}"></td>
+						  				<td>
+						  					<span th:if="${#strings.substring(privilege.privilege,0,1)=='1'}" class="badge badge-info">Ajout</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,1,2)== '1'}" class="badge badge-warning">Modification</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,2,3) == '1'}" class="badge badge-secondary">Validation</span>
+								         	<span th:if="${#strings.substring(privilege.privilege,3,4) == '1'}" class="badge badge-danger">Suppression</span>
+						  				</td>
+						  				<td><button onclick="remove(this)" class="btn btn-danger text-white" id="remove"> <i class="fa fa-trash"></i> Enlever </button>  </td>
+						  			</tr>
+						  		</th:block>
+						  </tbody>
+						</table>
+			</div>
+			<form method="POST" th:action="@{/system/group/{id}/privileges(id=${groupe.id})}" >
+				<button type="submit" class="btn btn-primary mt-5"> <i class="fa fa-check"></i> &nbsp Valider les privilèges</button>
+			</form>
+		</div>
+	</div>
+	
+	
+	<div th:replace="includes/model.html :: footer"></div>
+	<div th:include="includes/model.html :: jsIncludes"></div>
+	
+	<script th:inline="javascript">
+	$( "#add" ).click(function() {
+		
+		  var table = $('#privilegesTable');
+
+		  var element = $('#privilege').find(":selected").text()  ; 
+		  var value = $('#privilege').find(":selected").val(); 
+		  
+		if(value>0 && notFoundPrivilege(value) && check()){ 
+			var str = privilegeStr() ; 
+			var ressourceId = getId() ; 
+			reinitCheckBox() ; 
+		  	table.append('<tr><td class="privilegeId" id="'+value+'#'+ressourceId+'" hidden></td><td class="ressourceId">'+value+'</td><td> '+element+'</td> <td> '+str+'</td> </td> <td><button onclick="remove(this)" class="btn btn-danger text-white" id="remove"> <i class="fa fa-trash"></i> Enlever </button>  </td></tr>')
+		}
+		$("#privilege").val(-1) ; 
+	});
+	
+	
+	$("form").submit(function(event){
+		ressourceId = "" ; 
+		$(".privilegeId").each(function(){
+			ressourceId +=  $(this).attr('id')+"@" ; 
+		});
+
+		$('<input>').attr({
+		    type: 'hidden',
+		    id: 'ressources',
+		    name: 'ressources',
+		    value: ressourceId
+		}).appendTo('form');
+		
+	}); 
+	
+	
+	function getId(){
+		var id = "0000"; 
+		if($("#ajout").is(":checked")){
+			//id[2] = "1"; //1000
+			id = id.replaceAt(0,"1") ; 
+		}
+		if($("#modification").is(":checked")){
+			//id[2] = "1"; //100
+			id = id.replaceAt(1,"1") ; 
+		}
+		if($("#validation").is(":checked")){
+			//id[1] = "1" ;  //10
+			id = id.replaceAt(2,"1") ; 
+		}
+		if($("#suppression").is(":checked")){
+			//id[0] = "1"; ///1
+			id= id.replaceAt(3,"1") ; 
+		}
+		
+		return id ; 
+	}
+	
+	String.prototype.replaceAt=function(index, replacement) {
+	    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+	}
+	
+	function notFoundPrivilege(index){
+		var a = 1 ; 
+		$(".ressourceId").each(function(){
+			var ids = $(this).text().split("#") ; 
+			if(index === ids[0])
+				a = a*0; 
+			else 
+				a = a*1; 
+		});
+		return a ; 
+	}
+	
+	function privilegeStr() {
+		var str = "" ; 
+		if($("#ajout").is(":checked")){
+			str += '<span class="badge badge-info mr-2">Ajout</span>';
+		}
+		if($("#modification").is(":checked")){
+			str += '<span class="badge badge-warning mr-2">Modification</span>';
+		}
+		if($("#validation").is(":checked")){
+			str += '<span class="badge badge-secondary mr-2">Validation</span>';
+		}
+		if($("#suppression").is(":checked")){
+			str += '<span class="badge badge-danger mr-2">Suppression</span>';
+		}
+			
+		return str ; 
+	}
+	
+	
+	function check(){
+		if($("#ajout").is(":checked") || $("#suppression").is(":checked") || $("#modification").is(":checked") || $("#validation").is(":checked")  )
+			return true; 
+		return false; 
+	}
+	
+	function remove(e){
+		$(e).parents('tr').remove(); 
+	}
+	
+	function reinitCheckBox(){
+		$("#ajout").prop("checked",false) ; 
+		$("#suppression").prop("checked",false) ; 
+		$("#validation").prop("checked",false) ; 
+		$("#modification").prop("checked",false) ; 
+	}
+	
+	
+	</script>
+
+	
+</body>
+</html>
