@@ -11,8 +11,10 @@ Projet pluridisciplinaire APADZ
 ![](index_5_bis.png)
 
 
-![](liste_articles.png)
-![](nouvel_article.png)
+![](liste_articles_1.png)
+![](liste_articles_2.png)
+![](nouvel_article_1.png)
+![](nouvel_article_2.png)
 
 
 ![](description_article_1.png)
